@@ -1,0 +1,56 @@
+<!doctype html>
+<html lang="zh-Hant">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width,initial-scale=1,viewport-fit=cover">
+  <meta name="theme-color" content="#173746">
+  <meta name="description" content="三人獨立闖關的算幾不等式課堂遊戲：四步解題、求救提示、心算題庫與教師設定。">
+  <title>極限造園王｜三人算幾挑戰</title>
+  <link rel="icon" type="image/svg+xml" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 32 32'%3E%3Crect width='32' height='32' rx='8' fill='%23173746'/%3E%3Cpath d='M7 24V12h18v12Z' fill='%233cbaa7'/%3E%3Cpath d='M7 24 25 12M7 12l18 12' stroke='%23fff' stroke-width='2'/%3E%3C/svg%3E">
+  <link rel="stylesheet" href="style.css">
+  <script src="engine.js" defer></script>
+  <script src="app.js" defer></script>
+</head>
+<body>
+  <div class="app-shell">
+    <header class="app-header">
+      <div class="brand"><span class="brand-mark" aria-hidden="true">✿</span><div><h1>極限造園王</h1><p>三人算幾挑戰 <span>／ 每題四步</span></p></div></div>
+      <div class="teacher-tools">
+        <button class="tool" id="theme-toggle" aria-pressed="false">深色模式</button>
+        <button class="tool" id="illustration-toggle" aria-pressed="true">插畫：開</button>
+        <button class="tool" id="pause-button" disabled>暫停</button>
+        <button class="tool" id="settings-button">教師設定</button>
+        <button class="tool" id="fullscreen-button">全螢幕</button>
+      </div>
+    </header>
+    <div class="class-strip"><span id="session-label">準備開始</span><span id="session-note">獨立完成得高分，卡住可以求救。</span><button id="stop-button" hidden>結束本輪</button></div>
+    <main id="board" class="board" aria-label="三位學生各自獨立的遊戲區"></main>
+    <footer class="app-footer"><span id="footer-note">先選座號，再由老師開始。</span><button class="primary" id="start-button">開始挑戰</button></footer>
+  </div>
+  <dialog id="settings-dialog" class="settings-dialog">
+    <form id="settings-form">
+      <div class="dialog-heading"><div><span class="eyebrow">TEACHER SETTINGS</span><h2>教師設定</h2></div><button type="button" class="close-button" id="close-settings" aria-label="關閉設定">×</button></div>
+      <div class="settings-scroll">
+        <div class="settings-grid">
+          <label>每位同學題數<select name="questions"><option>1</option><option>2</option><option>3</option><option>4</option><option>5</option><option>6</option><option>8</option><option>10</option><option>12</option></select></label>
+          <label>基本題每題時間<select name="seconds" id="seconds-options"></select></label>
+          <label>進階題每題時間<select name="advancedSeconds" id="advanced-seconds-options"></select></label>
+          <label>每題求救卡上限<select name="helpLimit"><option>0</option><option>1</option><option>2</option><option>3</option><option>4</option></select></label>
+          <label>答錯一次扣分<select name="errorPenalty"><option value="0">不扣分</option><option value="1">扣 1 分</option><option value="2">扣 2 分</option><option value="3">扣 3 分</option><option value="5">扣 5 分</option></select></label>
+          <label>座號範圍上限<select name="seatMax"><option>27</option><option>30</option><option>35</option><option>40</option><option>50</option></select></label>
+        </div>
+        <div class="switch-row"><label><input type="checkbox" name="illustrations"> 顯示人物與寵物插畫</label><label><input type="checkbox" name="timer"> 開啟倒數計時</label><label><input type="checkbox" name="darkMode"> 深色模式</label></div>
+        <h3>基本題型｜兩數算幾</h3><div id="basic-topics" class="topic-picker"></div>
+        <label class="advanced-switch"><input type="checkbox" name="advanced" id="advanced-switch"> 啟用進階題｜三數算幾</label>
+        <p class="setting-explanation">預設關閉。紙盒裁角使用三項算幾；貨箱題含長、寬、高三個變數。</p>
+        <div id="advanced-topics" class="topic-picker"></div>
+        <div class="scoring-guide"><b>每題 100 分，四小關各 25 分</b><p>獨立答對 25 分 ／ 提示後答對 15 分 ／ 完整救援 5 分。答錯扣分只扣本小關，最低 0 分。</p><p>一張求救卡只協助目前小關；使用後仍可展開完整救援，不再消耗卡片。</p></div>
+        <p class="setting-explanation" id="setting-game-note"></p><p class="form-error" id="settings-error" role="alert"></p>
+      </div>
+      <div class="dialog-actions"><button type="button" class="secondary" id="reset-settings">恢復預設</button><button type="submit" class="primary">儲存設定</button></div>
+    </form>
+  </dialog>
+  <dialog id="confirm-dialog" class="confirm-dialog"><h2 id="confirm-title">結束本輪？</h2><p id="confirm-text"></p><div class="dialog-actions"><button class="secondary" id="cancel-confirm">繼續遊戲</button><button class="primary" id="accept-confirm">確定結束</button></div></dialog>
+  <div id="toast" class="toast" role="status"></div>
+</body>
+</html>
